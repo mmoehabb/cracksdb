@@ -2,6 +2,12 @@ import { FileManager } from "./FileManager";
 import { StateFileFactory } from "./StateFileFactory";
 import { StateFile } from "./StateFileInterface";
 
+export {
+    FileManager,
+    StateFile,
+    StateFileFactory
+};
+
 export class StateManager {
     private statefiles: object;
     private passkeys: object;
@@ -28,12 +34,12 @@ export class StateManager {
         return Object.keys(this.statefiles);
     }
 
-    add(substate: string, passkey?: string) {
+    add<DataUnit extends {}>(substate: string, passkey?: string) {
         if (this.substates.includes(substate))
             throw Error(`StateManager: add: ${substate} statefile already exists!`);
         
         this.fileManager.createDir(`${this.rootdir}/${substate}`);
-        const stateFile = this.factory.create(this.rootdir, substate);
+        const stateFile = this.factory.create<DataUnit>(this.rootdir, substate);
         this.statefiles[substate] = stateFile;
         if (passkey)
             this.passkeys[substate] = passkey;
