@@ -1,0 +1,28 @@
+{
+  "name": "cracks",
+  "version": "0.0.1",
+  "description": "A minimalist permanent state management package.",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahmoud-Ehab/cracks.git"
+  },
+  "keywords": [
+    "npm",
+    "StateManagement",
+    "typescript"
+  ],
+  "author": "M. E. Abdelsalam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mahmoud-Ehab/cracks/issues"
+  },
+  "homepage": "https://github.com/Mahmoud-Ehab/cracks#readme",
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.3"
+  }
+}
