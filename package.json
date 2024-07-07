@@ -1,14 +1,17 @@
 {
-  "name": "cracks",
+  "name": "cracksdb",
   "version": "0.0.1",
   "description": "A minimalist permanent state management package.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mahmoud-Ehab/cracks.git"
+    "url": "git+https://github.com/Mahmoud-Ehab/cracksdb.git"
   },
   "keywords": [
     "npm",
@@ -18,9 +21,9 @@
   "author": "M. E. Abdelsalam",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Mahmoud-Ehab/cracks/issues"
+    "url": "https://github.com/Mahmoud-Ehab/cracksdb/issues"
   },
-  "homepage": "https://github.com/Mahmoud-Ehab/cracks#readme",
+  "homepage": "https://github.com/Mahmoud-Ehab/cracksdb#readme",
   "devDependencies": {
     "@types/node": "^20.14.10",
     "typescript": "^5.5.3"
