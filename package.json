@@ -1,6 +1,6 @@
 {
   "name": "cracksdb",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "A minimalist permanent state management package.",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
