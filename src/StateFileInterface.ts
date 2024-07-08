@@ -3,6 +3,7 @@ import { Condition } from "./types";
 
 export interface StateFile<DataUnit> {
     len(): number;
+    passkey(): string;
     setLimit(limit: number): void;
     addMetaAttr(attr: string, value: string): boolean;
     rmvMetaAttr(attr: string): boolean;
