@@ -9,15 +9,17 @@ export class StateFileFactory {
         this.fileManager = fileManager;
     }
 
-    create<DataUnit extends object>(dirpath: string, substate_name: string): StateFile<DataUnit> {
+    create<DataUnit extends object>(dirpath: string, substate_name: string, passkey?: string): StateFile<DataUnit> {
         const stateFileContainer = new StateFileContainer<DataUnit>(
             this.fileManager,
             dirpath,
-            substate_name
+            substate_name,
+            passkey
         );
 
         return {
             len: stateFileContainer.len.bind(stateFileContainer),
+            passkey: stateFileContainer.passkey.bind(stateFileContainer),
             setLimit: stateFileContainer.setLimit.bind(stateFileContainer),
             addMetaAttr: stateFileContainer.addMetaAttr.bind(stateFileContainer),
             rmvMetaAttr: stateFileContainer.rmvMetaAttr.bind(stateFileContainer),

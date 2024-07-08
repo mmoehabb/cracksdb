@@ -26,8 +26,10 @@ export class StateManager {
 
         // load existing substates if any
         const substates = fileManager.exploreDir(rootdir);
-        for (let substate of substates)
-            this.add(substate);
+        for (let substate of substates) {
+            const sf = this.add(substate);
+            this.passkeys[substate] = sf.passkey();
+        }
     }
 
     get substates() {
@@ -39,7 +41,7 @@ export class StateManager {
             throw Error(`StateManager: add: ${substate} statefile already exists!`);
         
         this.fileManager.createDir(`${this.rootdir}/${substate}`);
-        const stateFile = this.factory.create<DataUnit>(this.rootdir, substate);
+        const stateFile = this.factory.create<DataUnit>(this.rootdir, substate, passkey);
         this.statefiles[substate] = stateFile;
         if (passkey)
             this.passkeys[substate] = passkey;

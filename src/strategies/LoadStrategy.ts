@@ -35,8 +35,9 @@ export class LoadStrategy<DataUnit> {
         if (!json) {
             throw Error(path + " file validation yields false!");
         }
-        if ((json as SF).meta["limit"])
-            this.sfc.meta["limit"] = (json as SF).meta["limit"];
+
+        for (let key in (json as SF).meta)
+            this.sfc.meta[key] = (json as SF).meta[key];
 
         this.sfc.cracks_data.push((json as SF).data as DataUnit[]);
     }

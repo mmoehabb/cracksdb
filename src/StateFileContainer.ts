@@ -25,7 +25,7 @@ export class StateFileContainer<DataUnit> {
     loader: LoadStrategy<DataUnit>;
     saver: SaveStrategy<DataUnit>;
 
-    constructor(fileManager: FileManager, dirpath: string, substate_name: string) {
+    constructor(fileManager: FileManager, dirpath: string, substate_name: string, passkey?: string) {
         this.retriever = new RetrieveStrategy<DataUnit>(this);
         this.manipulator = new ManipulateStrategy<DataUnit>(this);
         this.loader = new LoadStrategy<DataUnit>(this);
@@ -65,11 +65,17 @@ export class StateFileContainer<DataUnit> {
         const lastCrack = this.cracks_paths[0];
         this.meta = {
             substate: substate_name,
-            crack: lastCrack ? this.orderOf(lastCrack) : 1
+            crack: lastCrack ? this.orderOf(lastCrack) : 1,
+            passkey: passkey || "",
         }
 
-        if (lastCrack)
+        if (lastCrack) {
             this.loader.loadCrack(lastCrack)
+            if (this.meta["limit"])
+            if (typeof this.meta["limit"] === "number")
+            if (this.meta["limit"] > 0)
+                this.limit = this.meta["limit"];
+        }
         else {
             const path = `${dirpath}/${substate_name}/sf.1.${substate_name}.json`;
             fileManager.addFile(path, fileManager.createFile(path));
@@ -85,6 +91,10 @@ export class StateFileContainer<DataUnit> {
         for (let cd of this.cracks_data)
             count += cd.length;
         return count;
+    }
+
+    passkey(): string {
+        return this.meta.passkey || "";
     }
 
     setLimit(limit: number) {
