@@ -4,7 +4,10 @@ A minimalist permanent state management npm package.
 
 StateFile Architecture is the concept behind cracksdb. In case you're willing to know how exatly it works, contributes to it, or use all it's features properly. You may want to read [this article](https://dev.to/_moehab/statefile-a-minimalist-design-for-permanent-state-management-43d7).
 
+![overview-gif](./cracksdb-overview.gif)
+
 # Usage
+
 You can install cracksdb in your node project with the command:
 
 ```bash
