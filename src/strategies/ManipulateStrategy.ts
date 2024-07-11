@@ -28,6 +28,7 @@ export class ManipulateStrategy<DataUnit> {
         }
         return this.sfc.loader.tmpLoadAll(() => {
             const mutObj = this.sfc.retriever.getMut(index);
+            // in case getMut returns {}
             if (!this.sfc.typer.checkObj(mutObj, this.sfc.unittype)) {
                 console.error("StateFile: update: index out of bound or data integrity error.");
                 console.error(mutObj);
