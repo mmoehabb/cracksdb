@@ -21,6 +21,7 @@ export class StateFileFactory {
             len: stateFileContainer.len.bind(stateFileContainer),
             passkey: stateFileContainer.passkey.bind(stateFileContainer),
             setLimit: stateFileContainer.setLimit.bind(stateFileContainer),
+            getSimul: stateFileContainer.getSimul.bind(stateFileContainer),
             setSimul: stateFileContainer.setSimul.bind(stateFileContainer),
 
             addMetaAttr: stateFileContainer.addMetaAttr.bind(stateFileContainer),

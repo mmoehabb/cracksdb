@@ -13,7 +13,6 @@ export class StateFileContainer<DataUnit> {
     cracks_data: Array<Array<DataUnit>>;
 
     limit: number;
-    simul: boolean;
 
     fileManager: FileManager;
     dirpath: string;
@@ -37,7 +36,6 @@ export class StateFileContainer<DataUnit> {
         this.fileManager = fileManager;
         this.dirpath = dirpath
         this.limit = 100;
-        this.simul = true;
 
         // simplified regex for sf.[number].[substate_name].json
         const isSF = new RegExp(`sf.[1-9][0-9]?[0-9]?.${substate_name}.json`)
@@ -67,6 +65,7 @@ export class StateFileContainer<DataUnit> {
             substate: substate_name,
             crack: lastCrack ? this.orderOf(lastCrack) : 1,
             passkey: passkey || "",
+            simul: true
         }
 
         if (lastCrack) {
@@ -102,8 +101,13 @@ export class StateFileContainer<DataUnit> {
         this.saver.saveCrack(0);
     }
 
+    getSimul() {
+      return this.meta.simul;
+    }
+
     setSimul(simul: boolean) {
-      this.simul = simul;
+      this.meta.simul = simul;
+      this.saver.save();
     }
 
     addMetaAttr(attr: string, value: string): boolean {
@@ -111,6 +115,9 @@ export class StateFileContainer<DataUnit> {
             return false;
         }
         this.meta[attr] = value;
+        if (this.getSimul()) {
+          this.saver.save();
+        }
         return true;
     }
 
@@ -119,6 +126,9 @@ export class StateFileContainer<DataUnit> {
             return false;
         }
         delete this.meta[attr];
+        if (this.getSimul()) {
+          this.saver.save();
+        }
         return true;
     }
 

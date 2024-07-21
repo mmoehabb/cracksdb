@@ -6,7 +6,8 @@ export type Meta = {
     substate: string,
     crack: number,
     sealed?: boolean,
-    passkey?: string
+    passkey?: string,
+    [key: string]: any
 }
 
 export type SF = {

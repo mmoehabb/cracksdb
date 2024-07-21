@@ -5,6 +5,7 @@ export interface StateFile<DataUnit> {
     len(): number;
     passkey(): string;
     setLimit(limit: number): void;
+    getSimul(): boolean;
     setSimul(simul: boolean): void;
 
     addMetaAttr(attr: string, value: string): boolean;
