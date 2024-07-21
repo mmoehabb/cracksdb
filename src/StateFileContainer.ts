@@ -102,6 +102,10 @@ export class StateFileContainer<DataUnit> {
         this.saver.saveCrack(0);
     }
 
+    setSimul(simul: boolean) {
+      this.simul = simul;
+    }
+
     addMetaAttr(attr: string, value: string): boolean {
         if (["substate", "crack", "sealed"].includes(attr)) {
             return false;
