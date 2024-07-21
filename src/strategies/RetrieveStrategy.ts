@@ -24,8 +24,12 @@ export class RetrieveStrategy<DataUnit extends {}> {
 
     getList(from: number, to: number): Array<DataUnit> {
         const list: Array<DataUnit> = [];
-        for (let i = from; i < to; i++)
-            list.push(this.get(i));
+        for (let i = from; i < to; i++) {
+          if (Object.keys(this.get(i)).length === 0) {
+            break;
+          }
+          list.push(this.get(i));
+        }
         return list;
     }
 
