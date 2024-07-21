@@ -26,16 +26,18 @@ export class ManipulateStrategy<DataUnit> {
             console.error("StateFile: update: newdata type is invalid.");
             return false;
         }
-        return this.sfc.loader.tmpLoadAll(() => {
-            const mutObj = this.sfc.retriever.getMut(index);
+        return this.sfc.retriever.getMut(index, (mutObj, crackIndex) => {
             // in case getMut returns {}
-            if (!this.sfc.typer.checkObj(mutObj, this.sfc.unittype)) {
+            if (!this.sfc.typer.checkObj(mutObj as object, this.sfc.unittype)) {
                 console.error("StateFile: update: index out of bound or data integrity error.");
                 console.error(mutObj);
                 return false;
             }
             for (let key in newdata) {
                 mutObj[key] = newdata[key];
+            }
+            if (this.sfc.simul) {
+              this.sfc.saver.saveCrack(crackIndex);
             }
             return true;
         })
@@ -47,8 +49,17 @@ export class ManipulateStrategy<DataUnit> {
 
         const successes: Array<boolean> = [];
         const indexex = this.sfc.retriever.getIndexOf(cond);
+
+        const oldSimul = this.sfc.simul; 
+        this.sfc.setSimul(false);
         for (let i of indexex)
             successes.push(this.update(i, newdata));
+        
+        if (oldSimul == true) {
+          this.sfc.setSimul(oldSimul)
+          this.sfc.saver.save()
+        }
+
         return successes;
     }
 
@@ -62,17 +73,21 @@ export class ManipulateStrategy<DataUnit> {
                 console.error("StateFile: get: index out of scope.");
                 return false;
             }
-            this.sfc.loader.tmpLoad(() => this.remove(index));
-            return true;
+            return this.sfc.loader.tmpLoad(() => this.remove(index));
         }
 
         let tmp = 0;
+        let i = 0;
         for (let cd of this.sfc.cracks_data) {
             if (index >= (cd.length + tmp)) {
                 tmp += cd.length;
+                i += 1;
                 continue;
             }
-            cd = [...cd.slice(0, index-tmp), ...cd.slice(index-tmp+1, cd.length)]
+            this.sfc.cracks_data[i] = [...cd.slice(0, index-tmp), ...cd.slice(index-tmp+1, cd.length)]
+            if (this.sfc.simul) {
+              this.sfc.saver.saveCrack(i)
+            }
             return true;
         }
 
@@ -82,8 +97,17 @@ export class ManipulateStrategy<DataUnit> {
     removeWhere(cond: Condition<DataUnit>): boolean[] {
         const successes: Array<boolean> = [];
         const indexes = this.sfc.retriever.getIndexOf(cond);
-        for (let i of indexes)
+        
+        const oldSimul = this.sfc.simul; 
+        this.sfc.setSimul(false);
+        for (let i of indexes) {
             successes.push(this.remove(i));
+        }
+        if (oldSimul == true) {
+          this.sfc.setSimul(oldSimul)
+          this.sfc.saver.save()
+        }
+
         return successes;
     }
 }
