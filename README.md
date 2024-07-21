@@ -83,6 +83,8 @@ interface StateFile<DataUnit> {
     len(): number;
     passkey(): string;
     setLimit(limit: number): void;
+    setSimul(simul: boolean): void;
+
     addMetaAttr(attr: string, value: string): boolean;
     rmvMetaAttr(attr: string): boolean;
     extendUnitType(extension: Type): void;
