@@ -54,7 +54,7 @@ export class RetrieveStrategy<DataUnit extends {}> {
         return indexes;
     }
 
-    getMut(index: number) {
+    getMut(index: number, callback?: (obj: DataUnit, crackIndex: number) => void) {
         if (index < 0) {
             return {};
         }
@@ -63,16 +63,18 @@ export class RetrieveStrategy<DataUnit extends {}> {
             if (this.sfc.cracks_data.length >= this.sfc.cracks_paths.length)
                 return {};
                 
-            return this.sfc.loader.tmpLoad(() => this.get(index));
+            return this.sfc.loader.tmpLoad(() => this.getMut(index, callback));
         }
 
         let tmp = 0;
+        let i = 0;
         for (let cd of this.sfc.cracks_data) {
             if (index >= (cd.length + tmp)) {
                 tmp += cd.length;
+                i += 1;
                 continue;
             }
-            return cd[index - tmp];
+            return callback ? callback(cd[index - tmp], i) : cd[index - tmp];
         }
     }
 }
