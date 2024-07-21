@@ -15,7 +15,7 @@ export class ManipulateStrategy<DataUnit> {
         if (this.sfc.cracks_data[0].length >= this.sfc.limit)
             this.sfc.saver.seal();
 
-        this.sfc.cracks_data[0].push(obj);
+        this.sfc.cracks_data[0].unshift(obj);
 
         if (this.sfc.simul)
             this.sfc.saver.saveCrack(0);
