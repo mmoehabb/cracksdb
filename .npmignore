@@ -9,3 +9,5 @@ package-lock.json
 tsconfig.json
 plugins
 overview.gif
+test
+db
