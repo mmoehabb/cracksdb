@@ -112,7 +112,7 @@ export class FileManager {
     }
 
     deleteDir(dirpath: string) {
-        fs.rmdirSync(dirpath, { recursive: true })
+        fs.rmSync(dirpath, { recursive: true })
     }
 
     private read(filepath: string): string {
