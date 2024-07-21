@@ -17,7 +17,7 @@ export class ManipulateStrategy<DataUnit> {
 
         this.sfc.cracks_data[0].unshift(obj);
 
-        if (this.sfc.simul)
+        if (this.sfc.getSimul())
             this.sfc.saver.saveCrack(0);
     }
 
@@ -36,7 +36,7 @@ export class ManipulateStrategy<DataUnit> {
             for (let key in newdata) {
                 mutObj[key] = newdata[key];
             }
-            if (this.sfc.simul) {
+            if (this.sfc.getSimul()) {
               this.sfc.saver.saveCrack(crackIndex);
             }
             return true;
@@ -50,7 +50,7 @@ export class ManipulateStrategy<DataUnit> {
         const successes: Array<boolean> = [];
         const indexex = this.sfc.retriever.getIndexOf(cond);
 
-        const oldSimul = this.sfc.simul; 
+        const oldSimul = this.sfc.getSimul(); 
         this.sfc.setSimul(false);
         for (let i of indexex)
             successes.push(this.update(i, newdata));
@@ -85,7 +85,7 @@ export class ManipulateStrategy<DataUnit> {
                 continue;
             }
             this.sfc.cracks_data[i] = [...cd.slice(0, index-tmp), ...cd.slice(index-tmp+1, cd.length)]
-            if (this.sfc.simul) {
+            if (this.sfc.getSimul()) {
               this.sfc.saver.saveCrack(i)
             }
             return true;
@@ -98,7 +98,7 @@ export class ManipulateStrategy<DataUnit> {
         const successes: Array<boolean> = [];
         const indexes = this.sfc.retriever.getIndexOf(cond);
         
-        const oldSimul = this.sfc.simul; 
+        const oldSimul = this.sfc.getSimul(); 
         this.sfc.setSimul(false);
         for (let i of indexes) {
             successes.push(this.remove(i));
