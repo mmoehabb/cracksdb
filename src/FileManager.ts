@@ -38,9 +38,11 @@ type FilesObj = {[name: string]: File};
 
 export class FileManager {
     private files: FilesObj;
+    private log: (text: string) => void;
 
-    constructor(files: FilesObj) {
+    constructor(files: FilesObj, log?: (text: string) => void) {
         this.files = files;
+        this.log = log;
     }
 
     createFile(path: string, content?: string) {
@@ -53,7 +55,8 @@ export class FileManager {
             throw Error("Cannot add two files with the same name.");
         
         if (fs.existsSync(file.path)) {
-            console.warn("Already found file " + file.path + " in storage.");
+            if (this.log)
+                this.log("Already found file " + file.path + " in storage.");
             this.files[name] = file;
             file.setContent(this.read(file.path))
         }
