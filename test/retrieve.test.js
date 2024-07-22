@@ -92,7 +92,7 @@ describe("# Retrieve Tests:", function() {
       id: 'string',
       user_id: 'string',
       title: 'string',
-      contect: 'string'
+      content: 'string'
     })
     
     users.setLimit(3)
@@ -113,28 +113,36 @@ describe("# Retrieve Tests:", function() {
   })
 
   describe("## Retrieving certian data units tests:", function() {
-    it("should retrieve data unit with its index.", function() {
+    it("should retrieve data unit with its index", function() {
       const users = db.get("users")
       const user = users.get(0)
       expect(user).to.be.ok()
       expect(user).to.eql(mockUsesrs[4])
     })
 
-    it("should retrieve data unit with index exceeding the limit.", function() {
+    it("should retrieve imutable data unit object", function() {
+      const users = db.get("users")
+      const user = users.get(0)
+      expect(user).to.be.ok()
+      user.name = "somelongname"
+      expect(user).to.not.eql(users.get(0))
+    })
+
+    it("should retrieve data unit with index exceeding the limit", function() {
       const users = db.get("users")
       const user = users.get(4)
       expect(user).to.be.ok()
       expect(user).to.eql(mockUsesrs[0])
     })
 
-    it("should retrieve a data unit that applies to certain condition.", function() {
+    it("should retrieve a data unit that applies to certain condition", function() {
       const users = db.get("users")
       const user = users.getWhere(obj => obj.name === "bob")
       expect(user).to.be.ok()
       expect(user).to.eql(mockUsesrs[2])
     })
 
-    it("should only retrieve the first user that applies to the condition.", function() {
+    it("should only retrieve the first user that applies to the condition", function() {
       const users = db.get("users")
       const user = users.getWhere(obj => obj.age <= 20)
       expect(user).to.be.ok()
@@ -144,28 +152,28 @@ describe("# Retrieve Tests:", function() {
   })
 
   describe("## Retrieving collection of data units tests:", function() {
-    it("should retrieve list of data units within two indexes.", function() {
+    it("should retrieve list of data units within two indexes", function() {
       const users = db.get("users")
       const usersList = users.getList(1, 3)
       expect(usersList).to.be.ok()
       expect(usersList).to.eql([mockUsesrs[3], mockUsesrs[2]])
     })
 
-    it("should retrieve list of all data units when the index exceeds the boundary.", function() {
+    it("should retrieve list of all data units when the index exceeds the boundary", function() {
       const users = db.get("users")
       const usersList = users.getList(0, 100)
       expect(usersList).to.be.ok()
       expect(usersList).to.eql(mockUsesrs.reverse())
     })
     
-    it("should retrieve list of indexes of data units that apply to a condition.", function() {
+    it("should retrieve list of indexes of data units that apply to a condition", function() {
       const users = db.get("users")
       const user = users.getIndexOf(obj => obj.age <= 20)
       expect(user).to.be.ok()
       expect(user).to.eql([1, 4])
     })
 
-    it("should retrieve list of data units that apply to a condition.", function() {
+    it("should retrieve list of data units that apply to a condition", function() {
       const users = db.get("users")
       const posts = db.get("posts")
       const userId = users.getWhere(obj => obj.name === "Halbirt").id
