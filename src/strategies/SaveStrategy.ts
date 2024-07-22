@@ -21,17 +21,9 @@ export class SaveStrategy<DataUnit> {
     }
 
     split() {
-        const tmp: Array<any> = [];
         const curcrack = this.sfc.cracks_data[0];
         const tmp_len = Math.floor(curcrack.length / 2);
-
-        for (let i = tmp_len; i < curcrack.length; i++) {
-            tmp.push(JSON.parse(JSON.stringify(curcrack[i])));
-            delete curcrack[i];
-        }
-        curcrack.length -= tmp_len;
-
-        this.seal(tmp);
+        this.seal(curcrack.splice(0, tmp_len));
     }
 
     save() {
