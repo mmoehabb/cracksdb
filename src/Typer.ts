@@ -37,19 +37,21 @@ export class Typer {
     checkType(t1: Type, t2: Type): boolean {
         for (let key in t2) {
             if (t1[key] === undefined)
-                continue;
+                return false;
 
             if (this.typeOf(t2[key]) !== this.typeOf(t1[key]))
                 return false;
 
-            if (this.typeOf(t2[key]) === this.types.OBJECT)
-                if (!this.checkType(t1[key] as Type, t2[key] as Type))
-                    return false;
+            if (this.typeOf(t2[key]) === this.types.OBJECT) {
+                if(!this.checkType(t1[key] as Type, t2[key] as Type)) {
+                  return false;
+                }
+                continue
+            }
 
             if (t1[key] !== t2[key])
                 return false;
         }
-
         return true;
     }
 
