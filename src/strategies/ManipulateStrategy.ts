@@ -98,8 +98,8 @@ export class ManipulateStrategy<DataUnit> {
 
     removeWhere(cond: Condition<DataUnit>): boolean[] {
         const successes: Array<boolean> = [];
-        const indexes = this.sfc.retriever.getIndexOf(cond);
-        
+        const indexes = this.sfc.retriever.getIndexOf(cond).reverse();
+
         const oldSimul = this.sfc.getSimul(); 
         this.sfc.setSimul(false);
         for (let i of indexes) {
