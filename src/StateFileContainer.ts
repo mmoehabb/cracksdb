@@ -132,6 +132,10 @@ export class StateFileContainer<DataUnit> {
         return true;
     }
 
+    getUnitType(): Type {
+      return this.unittype;
+    }
+
     extendUnitType(extension: Type) {
         const typer = new Typer();
         this.unittype = typer.combineTypes(this.unittype, extension);

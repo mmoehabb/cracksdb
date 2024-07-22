@@ -10,6 +10,7 @@ export interface StateFile<DataUnit> {
 
     addMetaAttr(attr: string, value: string): boolean;
     rmvMetaAttr(attr: string): boolean;
+    getUnitType(): Type;
     extendUnitType(extension: Type): void;
     
     get(index: number): DataUnit;
