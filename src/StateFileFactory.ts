@@ -26,6 +26,7 @@ export class StateFileFactory {
 
             addMetaAttr: stateFileContainer.addMetaAttr.bind(stateFileContainer),
             rmvMetaAttr: stateFileContainer.rmvMetaAttr.bind(stateFileContainer),
+            getUnitType: stateFileContainer.getUnitType.bind(stateFileContainer),
             extendUnitType: stateFileContainer.extendUnitType.bind(stateFileContainer),
             
             get: stateFileContainer.retriever.get.bind(stateFileContainer.retriever),

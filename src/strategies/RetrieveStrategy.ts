@@ -60,12 +60,12 @@ export class RetrieveStrategy<DataUnit extends {}> {
 
     getMut(index: number, callback?: (obj: DataUnit, crackIndex: number) => void) {
         if (index < 0) {
-            return {};
+            return callback ? callback({} as DataUnit, -1) : {};
         }
 
         if (index >= this.sfc.len()) {
             if (this.sfc.cracks_data.length >= this.sfc.cracks_paths.length)
-                return {};
+                return callback ? callback({} as DataUnit, -1) : {};
                 
             return this.sfc.loader.tmpLoad(() => this.getMut(index, callback));
         }
