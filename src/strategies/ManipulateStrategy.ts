@@ -22,7 +22,11 @@ export class ManipulateStrategy<DataUnit> {
     }
 
     update(index: number, newdata: DataUnit) {
-        if (!this.sfc.typer.checkObj(newdata as object, this.sfc.unittype)) {
+        // the unittype should apply to the type of the newdata.
+        // in other words, newdata cannot have fields that are 
+        // undefined in the unittype
+        const newdata_type = this.sfc.typer.generateType(newdata as object);
+        if (!this.sfc.typer.checkType(this.sfc.unittype, newdata_type)) {
             throw Error("StateFile: update: newdata type is invalid.");
         }
         return this.sfc.retriever.getMut(index, (mutObj, crackIndex) => {
