@@ -21,18 +21,19 @@ export class ManipulateStrategy<DataUnit> {
             this.sfc.saver.saveCrack(0);
     }
 
-    update(index: number, newdata: DataUnit) {
-        // the unittype should apply to the type of the newdata.
-        // in other words, newdata cannot have fields that are 
-        // undefined in the unittype
-        const newdata_type = this.sfc.typer.generateType(newdata as object);
-        if (!this.sfc.typer.checkType(this.sfc.unittype, newdata_type)) {
-            throw Error("StateFile: update: newdata type is invalid.");
-        }
-        return this.sfc.retriever.getMut(index, (mutObj, crackIndex) => {
+    update(index: number, builder: (prev: DataUnit) => DataUnit) {
+        this.sfc.retriever.getMut(index, (mutObj, crackIndex) => {
             // in case getMut returns {}
             if (!this.sfc.typer.checkObj(mutObj as object, this.sfc.unittype)) {
                 throw Error("StateFile: update: index out of bound or data integrity error.");
+            }
+            const newdata = builder(JSON.parse(JSON.stringify(mutObj)));
+            const newdata_type = this.sfc.typer.generateType(newdata as object);
+            // the unittype should apply to the type of the newdata.
+            // in other words, newdata cannot have fields that are 
+            // undefined in the unittype
+            if (!this.sfc.typer.checkType(this.sfc.unittype, newdata_type)) {
+                throw Error("StateFile: update: newdata type is invalid.");
             }
             for (let key in newdata) {
                 mutObj[key] = newdata[key];
@@ -43,10 +44,7 @@ export class ManipulateStrategy<DataUnit> {
         })
     }
 
-    updateWhere(cond: Condition<DataUnit>, newdata: DataUnit): boolean[] {
-        if (!this.sfc.typer.checkObj(newdata as object, this.sfc.unittype))
-            throw Error("StateFile: updateWhere: newdata type is invalid.");
-
+    updateWhere(cond: Condition<DataUnit>, builder: (prev: DataUnit) => DataUnit): boolean[] {
         const successes: Array<boolean> = [];
         const indexex = this.sfc.retriever.getIndexOf(cond);
 
@@ -54,7 +52,7 @@ export class ManipulateStrategy<DataUnit> {
         this.sfc.setSimul(false);
         for (let i of indexex) {
           try {
-            this.update(i, newdata)
+            this.update(i, builder);
             successes.push(true);
           }
           catch(e) {
@@ -105,7 +103,13 @@ export class ManipulateStrategy<DataUnit> {
         const oldSimul = this.sfc.getSimul(); 
         this.sfc.setSimul(false);
         for (let i of indexes) {
-            successes.push(this.remove(i));
+          try {
+            this.remove(i)
+            successes.push(true);
+          }
+          catch(e) {
+            successes.push(false);
+          }
         }
         if (oldSimul == true) {
           this.sfc.setSimul(oldSimul)

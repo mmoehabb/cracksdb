@@ -20,8 +20,8 @@ export interface StateFile<DataUnit> {
     getIndexOf(cond: Condition<DataUnit>): number[];
 
     add(obj: DataUnit): void;
-    update(index: number, newdata: DataUnit): void;
-    updateWhere(cond: Condition<DataUnit>, newdata: DataUnit): boolean[];
+    update(index: number, builder: (prev: DataUnit) => DataUnit): void;
+    updateWhere(cond: Condition<DataUnit>, builder: (prev: DataUnit) => DataUnit): boolean[];
     remove(index: number): void;
     removeWhere(cond: Condition<DataUnit>): boolean[];
 
