@@ -61,6 +61,7 @@ export class StateManager {
 
         if (this.passkeys[substate] === passkey) {
             this.fileManager.deleteDir(`${this.rootdir}/${substate}`)
+            this.remove(substate)
             return;
         }
 
