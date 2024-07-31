@@ -37,7 +37,7 @@ StateManager automatically scans the root dir and loads the application state fo
 const users = db.add("users") // returns a StateFile object
 ```
 
-The structure of data units stored in _users_ substate may be defined either by using `users.extendUnitType(obj: Type)` method or by using generic `db.add<DataUnit>(...)` at the first place.
+The structure of data units stored in _users_ substate may be defined either by using `users.extendUnitType(obj: Type)` method or by using generic `db.add<DataUnit>(...)` at the first place. However, as obvious, the generic method only specifies the unit type for typescript autocomplete. Therefore, it's highly recommended to use extendUnitType method (right after creating the StateFile with db.add(...)) to ensure data integrity, and more importantly to enable updating data units as it will be illustrated next.
 
 > _Type_ is a map from strings to the set of values: "string", "number", "boolean", and Type itself.
 
@@ -46,6 +46,21 @@ const users = db.add<{name: string}>("users")
 users.extendUnitType({
     age: "number"
 })
+```
+
+To update your data units you can use `StateFile.update(...)` method which takes two arguments: first the index of the data unit, and second a builder function. A builder function simply takes the unit data, at the specified index, as a parameter and returns a new unit data object with the required updates. A worth mentioning subtlety, in StateFile update mechanism, is that update methods can only update fields that are declared by `StateFile.extendUnitType` method. As shown in the following example:
+
+```typescript
+const users = db.add<{name: string}>("users")
+users.extendUnitType({
+    age: "number"
+})
+users.add({
+    name: "Joe",
+    age: 30
+})
+users.update(0, (prev) => ({ age: prev.age + 1 })) // yields { name: "Joe", age: 31 }
+users.update(0, (prev) => ({ name: "John", age: 25 })) // throws an error as name is not declared in the unittype 
 ```
 
 To retrieve StateFiles from `db`, remove, or delete them. You may write:

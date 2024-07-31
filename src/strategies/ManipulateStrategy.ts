@@ -33,7 +33,8 @@ export class ManipulateStrategy<DataUnit> {
             // in other words, newdata cannot have fields that are 
             // undefined in the unittype
             if (!this.sfc.typer.checkType(this.sfc.unittype, newdata_type)) {
-                throw Error("StateFile: update: newdata type is invalid.");
+                throw Error(`StateFile: update: the passed object with new data has no compliance with the unittype.
+                            Ensure that you have defined your unittype with StateFile.extendUnitType method.`);
             }
             for (let key in newdata) {
                 mutObj[key] = newdata[key];
