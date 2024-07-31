@@ -48,7 +48,7 @@ users.extendUnitType({
 })
 ```
 
-To update your data units you can use `StateFile.update(...)` method which takes two arguments: first the index of the data unit, and second a builder function. A builder function simply takes the unit data, at the specified index, as a parameter and returns a new unit data object with the required updates. A worth mentioning subtlety, in StateFile update mechanism, is that update methods can only update fields that are declared by `StateFile.extendUnitType` method. As shown in the following example:
+To update your data units you can use `StateFile.update(...)` method which takes two arguments: first the index of the data unit, and second a builder function. A builder function simply takes the data unit, at the specified index, as a parameter and returns a new data unit object with the updated fields. A worth mentioning subtlety, in StateFile update mechanism, is that update methods can only update fields that are declared by `StateFile.extendUnitType` method. As shown in the following example:
 
 ```typescript
 const users = db.add<{name: string}>("users")
