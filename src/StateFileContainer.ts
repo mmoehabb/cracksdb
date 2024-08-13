@@ -139,11 +139,13 @@ export class StateFileContainer<DataUnit> {
     extendUnitType(extension: Type) {
         const typer = new Typer();
         this.unittype = typer.combineTypes(this.unittype, extension);
-        for (let cd of this.cracks_data) {
-            for (let unit of cd)
-                this.restruct(unit, this.unittype);
-        }
-        this.saver.save();
+        this.loader.tmpLoadAll(() => {
+          for (let cd of this.cracks_data) {
+              for (let unit of cd)
+                  this.restruct(unit, this.unittype);
+          }
+          this.saver.save();
+        })
     }
 
     orderOf(sfFileName: string) {
@@ -172,13 +174,23 @@ export class StateFileContainer<DataUnit> {
     }
 
     restruct(obj: DataUnit, type: Type) {
+        const typer = new Typer()
         for (let key in obj) {
             if (!type[key])
                 delete obj[key];
         }
         for (let key in type) {
-            if (!obj[key])
-                obj[key] = null;
+            if (!obj[key]) {
+                obj[key] = typer.defaultOf(type, key);
+            }
+            if (typeof(type[key]) === "object")
+            if (typeof(obj[key]) === "object") 
+            if (typeof(obj[key].length) === "number") {
+              for (let unit of obj[key]) {
+                this.restruct(unit, type[key])
+                delete unit["length"]
+              }
+            }
         }
     }
 }

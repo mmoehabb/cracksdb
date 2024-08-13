@@ -63,6 +63,8 @@ users.update(0, (prev) => ({ age: prev.age + 1 })) // yields { name: "Joe", age:
 users.update(0, (prev) => ({ name: "John", age: 25 })) // throws an error as name is not declared in the unittype 
 ```
 
+> You can add (unupdatable) fields that are not declared in the unittype. However, this practice is not recommended; as the undeclared fields will get removed automatically if extendUnitType is invoked again. In fact, extendUnitType could be computationally very expensive; it trims and restructs all data units in all state files.
+
 To retrieve StateFiles from `db`, remove, or delete them. You may write:
 
 ```typescript
@@ -87,6 +89,32 @@ StateManager can delete a StateFile only if it's been assigned a _passkey_ at fi
 const mysf = db.add("mysf", "password")
 db.delete("mysf", ""); // logs a warning
 db.delete("mysf", "password"); // deletes mysf files
+```
+
+With cracksdb version 1.1.0 or later, you can declare array fields just like declaring objects in the `StateFile.extendUnitType` method, but with the _length_ attribute defined as "number".
+
+```typescript
+const users = db.add("users")
+users.extendUnitType({
+    username: "string",
+    posts: {
+        length: "number",
+        title: "string",
+        content: "string"
+    }
+})
+
+users.add({
+    username: "John",
+    posts: [{
+        title: "My First Post",
+        content: "Lorem..."
+    }]
+})
+
+users.extendUnitType({ posts: { views: "number" } })
+
+console.log(users.get(0)) // { username: "John", posts: [{title: "My First Post", content: "Lorem...", view: 0}] }
 ```
 
 That's pretty much it. Now you are ready to go with crackdb. 
